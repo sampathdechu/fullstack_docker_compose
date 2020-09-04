@@ -9,9 +9,31 @@ services:
     ports:
       - 27017:27017
     volumes:
-      - mongodb_data_container:/data/db
+      - container_database_space:/data/db # key is volume created on host and value is in the image
+    networks:
+      - fullstack-network
+  dev_env:
+    image: 'dev_pyhon_image'
+    container_name: 'fullstack_dev_python'
+    build: ./jupyter-notebook-docker
+    networks:
+      - fullstack-network
+    ports:
+      - 8888:8888
+    volumes:
+      - container_notebook_space:/notebook_data # key is on the host and value is in the image
+   
+    
 volumes: 
-  mongodb_data_container: # empty value since it is default. 
+  container_database_space: # empty value since it is default. 
+    external: true #if the directory is not there it will error
+  container_notebook_space: 
+    external: true 
+
+networks:
+  fullstack-network:
+    driver: bridge
+    name: fullstack-network
 
 
 
