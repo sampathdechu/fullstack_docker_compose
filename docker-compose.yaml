@@ -1,0 +1,18 @@
+version: '3.8'
+services:
+  database:
+    image: 'mongo'
+    container_name: 'mongo-sam' #just container name - can be anything
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME:'root' # container image has these variables reffered to 
+      - MONGO_INITDB_ROOT_PASSWORD:'rootpasswd' # container image has these variables reffered to 
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodb_data_container:/data/db
+volumes: 
+  mongodb_data_container: # empty value since it is default. 
+
+
+
+
