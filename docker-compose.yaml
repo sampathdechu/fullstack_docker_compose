@@ -21,7 +21,8 @@ services:
     ports:
       - 8888:8888
     volumes:
-      - container_notebook_space:/notebook_data # key is on the host and value is in the image
+      - container_notebook_space:/home/jovyan # key is on the host and value is in the image
+
    
     
 volumes: 
