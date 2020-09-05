@@ -4,8 +4,8 @@ services:
     image: 'mongo'
     container_name: 'mongo-sam' #just container name - can be anything
     environment:
-      - MONGO_INITDB_ROOT_USERNAME:'root' # container image has these variables reffered to 
-      - MONGO_INITDB_ROOT_PASSWORD:'rootpasswd' # container image has these variables reffered to 
+      - MONGO_INITDB_ROOT_USERNAME='root' # container image has these variables reffered to 
+      - MONGO_INITDB_ROOT_PASSWORD='rootpasswd'# container image has these variables reffered to 
     ports:
       - 27017:27017
     volumes:
@@ -16,20 +16,27 @@ services:
     image: 'dev_pyhon_image'
     container_name: 'fullstack_dev_python'
     build: ./jupyter-notebook-docker
+    environment:
+      - NB_USER=sampath # /home/sampath would be created 
+      - CHOWN_HOME=yes # NB_USR and this variable has to be set for user to change to /home/sampath
+
+    user: root # run the container with this user so that env is setup properly. 
     networks:
       - fullstack-network
     ports:
       - 8888:8888
     volumes:
-      - container_notebook_space:/home/jovyan # key is on the host and value is in the image
+      - container_notebook_space:/home/sampath # key is on the host and value is in the image
 
    
     
 volumes: 
   container_database_space: # empty value since it is default. 
     external: true #if the directory is not there it will error
+    name: container_database_space
   container_notebook_space: 
     external: true 
+    name: container_notebook_space
 
 networks:
   fullstack-network:
