@@ -27,7 +27,10 @@ services:
     ports:
       - 8888:8888
     volumes:
-      - container_notebook_space:/home/sampath # key is on the host and value is in the image
+      - type : bind
+        source: ./work #want to save notebooks in bind volume
+        target: /home/sampath/work
+     # - container_notebook_space:/home/sampath # key is on the host and value is in the image
 
    
     
@@ -35,10 +38,7 @@ volumes:
   container_database_space: # empty value since it is default. 
     external: true #if the directory is not there it will error
     name: container_database_space
-  container_notebook_space: 
-    external: true 
-    name: container_notebook_space
-
+  
 networks:
   fullstack-network:
     driver: bridge
