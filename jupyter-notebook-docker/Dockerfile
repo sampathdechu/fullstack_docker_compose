@@ -1,4 +1,4 @@
-FROM jupyter/scipy-notebook
+FROM jupyter/datascience-notebook
 
 COPY requirements.txt /tmp/
 
