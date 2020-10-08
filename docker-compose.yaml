@@ -1,5 +1,16 @@
 version: '3.8'
 services:
+  elastic: 
+    image: 'docker.elastic.co/elasticsearch/elasticsearch:7.9.2'
+    container_name: 'elastic-sam'
+    ports: 
+      - 9200:9200
+    environment: 
+      - discovery.type=single-node
+    volumes:
+        - container_database_space:/data/elastic # key is volume created on host and value is in the image
+    networks:
+        - fullstack-network
   database:
     image: 'mongo'
     container_name: 'mongo-sam' #just container name - can be anything
@@ -30,9 +41,27 @@ services:
       - type : bind
         source: ./work #want to save notebooks in bind volume
         target: /home/sampath/work
+      - type : bind
+        source: ./data #want to save notebooks in bind volume
+        target: /home/sampath/data
      # - container_notebook_space:/home/sampath # key is on the host and value is in the image
-
-   
+  web:
+    image: 'api_image'
+    container_name: 'api_container'
+    build: ./web_app
+    depends_on: 
+      - database
+    user: root # run the container with this user so that env is setup properly. 
+    networks:
+      - fullstack-network
+    ports:
+      - 8890:8888
+    volumes:
+      - type : bind
+        source: ./web_app #want to save notebooks in bind volume
+        target: /home/sampath
+      # - container_notebook_space:/home/sampath # key is on the host and value is in the image
+  
     
 volumes: 
   container_database_space: # empty value since it is default. 
